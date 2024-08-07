@@ -6,7 +6,10 @@ import EmojiEmotionsIcon from '@mui/icons-material/EmojiEmotions';
 import EmojiPicker  from 'emoji-picker-react';
 import { BASE_URL } from '../Asset/Enviroment';
 
-const socket = io(BASE_URL);
+const socket = io(BASE_URL,{ 
+    transports: ['websocket'], 
+    withCredentials: true 
+});
 
 const ChatRoom = () => {
     const {room} = useParams();

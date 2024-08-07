@@ -42,7 +42,7 @@ const ChatRoomList = () => {
             </Box>
             <List>
                 {rooms.map(room => (
-                <ListItem button key={room} onClick={() => navigate(`/chat/${room}`)}>
+                <ListItem key={room} onClick={() => navigate(`/chat/${room}`)}>
                     {room}
                 </ListItem>
                 ))}
