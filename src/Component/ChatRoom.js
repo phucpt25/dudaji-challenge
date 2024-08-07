@@ -17,17 +17,17 @@ const ChatRoom = () => {
     const [newMessage, setNewMessage] = useState('');
     const [showEmojiPicker, setShowEmojiPicker] = useState(false);
 
+    socket.emit('joinRoom', room);
+
+    socket.on('existingRoomMessages', (messages) => {
+        setMessages(messages);
+    });
+
+    socket.on('message', (message) => {
+        setMessages((prevMessages) => [...prevMessages, message]);
+    })
+    
     useEffect(() => {
-        socket.emit('joinRoom', room);
-
-        socket.on('existingRoomMessages', (messages) => {
-            setMessages(messages);
-        });
-
-        socket.on('message', (message) => {
-            setMessages((prevMessages) => [...prevMessages, message]);
-        })
-
         return () => {
             socket.off('existingRoomMessages');
             socket.off('message');
