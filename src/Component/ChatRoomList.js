@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { Button, TextField, Typography, List, ListItem, Container } from '@mui/material';
+import { Box, Button, TextField, Typography, List, ListItem, Container } from '@mui/material';
 import {BASE_URL} from '../Asset/Enviroment';
 
 const ChatRoomList = () => {
@@ -27,17 +27,19 @@ const ChatRoomList = () => {
     return (
         <Container>
             <Typography variant="h4" gutterBottom>Dudaji Challenge ChatRoom</Typography>
-            <TextField
-                label="Create new room"
-                variant="outlined"
-                value={newRoom}
-                onChange={(e) => setNewRoom(e.target.value)}
-                fullWidth
-                margin="normal"
-            />
-            <Button variant="contained" color="primary" onClick={handleCreateRoom}>
-                Create Room
-            </Button>
+            <Box mt={2} display="flex" flexDirection="row" alignItems="center"> 
+                <TextField
+                    label="Create new room"
+                    variant="outlined"
+                    value={newRoom}
+                    onChange={(e) => setNewRoom(e.target.value)}
+                    fullWidth
+                    margin="normal"
+                />
+                <Button variant="contained" color="primary" onClick={handleCreateRoom} style={{ marginTop: '8px', marginLeft: '10px' }}>
+                    Create Room
+                </Button>
+            </Box>
             <List>
                 {rooms.map(room => (
                 <ListItem button key={room} onClick={() => navigate(`/chat/${room}`)}>

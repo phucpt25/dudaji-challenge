@@ -1,7 +1,9 @@
 import React, {useEffect, useState} from 'react';
 import { useParams } from 'react-router-dom';
 import io from 'socket.io-client';
-import { Container, TextField, Button, Typography, List, ListItem, Box } from '@mui/material';
+import { Container, TextField, Button, Typography, List, ListItem, Box, IconButton } from '@mui/material';
+import EmojiEmotionsIcon from '@mui/icons-material/EmojiEmotions';
+import EmojiPicker  from 'emoji-picker-react';
 import { BASE_URL } from '../Asset/Enviroment';
 
 const socket = io(BASE_URL);
@@ -10,6 +12,7 @@ const ChatRoom = () => {
     const {room} = useParams();
     const [messages, setMessages] = useState([]);
     const [newMessage, setNewMessage] = useState('');
+    const [showEmojiPicker, setShowEmojiPicker] = useState(false);
 
     useEffect(() => {
         socket.emit('joinRoom', room);
@@ -34,6 +37,11 @@ const ChatRoom = () => {
         setNewMessage('');
     }
 
+
+    const handleShowEmojiPicker = (emojiObject, event) => {
+        setNewMessage(prevData => prevData + emojiObject.emoji);
+        setShowEmojiPicker(false);
+    }
     return (
         <Container>
             <Typography variant="h4" gutterBottom>Room name: {room}</Typography>
@@ -44,7 +52,17 @@ const ChatRoom = () => {
                 </ListItem>
             ))}
             </List>
-            <Box mt={2} display="flex" flexDirection="column" alignItems="center">
+            <Box mt={2} display="flex" flexDirection="row" alignItems="center">    
+
+                {/* Emoji Picker  */}
+                <IconButton onClick={() => setShowEmojiPicker(!showEmojiPicker)}>
+                    <EmojiEmotionsIcon />
+                </IconButton>
+                {showEmojiPicker && (
+                    <EmojiPicker  onEmojiClick={handleShowEmojiPicker} />
+                )}
+                {/* END Emoji Picker  */}
+
                 <TextField
                 label="Typing here"
                 variant="outlined"
@@ -60,7 +78,7 @@ const ChatRoom = () => {
                 variant="contained"
                 color="primary"
                 onClick={handleSendMessage}
-                style={{ marginTop: '8px' }}
+                style={{ marginTop: '8px', marginLeft: '10px' }}
                 >
                 Send
                 </Button>
