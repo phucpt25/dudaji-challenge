@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { Button, TextField, Typography, List, ListItem, Container } from '@mui/material';
 import {BASE_URL} from '../Asset/Enviroment';
 
 const ChatRoomList = () => {
@@ -24,25 +25,27 @@ const ChatRoomList = () => {
     };
 
     return (
-        <div>
-            <h1>Dudaji Challenge ChatRoom</h1>
-            <div>
-                <input
-                 type='text'
-                 placeholder='Create your own new'
-                 value={newRoom}
-                 onChange={(e) => setNewRoom(e.target.value)}
-                />
-                <button onClick={handleCreateRoom}>Create</button>
-            </div>
-            <ul>
-                {rooms.map((room) => (
-                    <li key={room} onClick={() => navigate(`/chat/${room}`)}>
-                        {room}
-                    </li>
+        <Container>
+            <Typography variant="h4" gutterBottom>Dudaji Challenge ChatRoom</Typography>
+            <TextField
+                label="Create new room"
+                variant="outlined"
+                value={newRoom}
+                onChange={(e) => setNewRoom(e.target.value)}
+                fullWidth
+                margin="normal"
+            />
+            <Button variant="contained" color="primary" onClick={handleCreateRoom}>
+                Create Room
+            </Button>
+            <List>
+                {rooms.map(room => (
+                <ListItem button key={room} onClick={() => navigate(`/chat/${room}`)}>
+                    {room}
+                </ListItem>
                 ))}
-            </ul>
-        </div>
+            </List>
+        </Container>
     )
 };
 

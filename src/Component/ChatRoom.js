@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import { useParams } from 'react-router-dom';
 import io from 'socket.io-client';
+import { Container, TextField, Button, Typography, List, ListItem, Box } from '@mui/material';
 import { BASE_URL } from '../Asset/Enviroment';
 
 const socket = io(BASE_URL);
@@ -25,8 +26,7 @@ const ChatRoom = () => {
             socket.off('existingRoomMessages');
             socket.off('message');
             socket.disconnect();
-        }
-
+          };
     }, [room]);
 
     const handleSendMessage = () => {
@@ -35,23 +35,37 @@ const ChatRoom = () => {
     }
 
     return (
-        <div>
-            <h1>Room name: {room}</h1>
-            <div>
-                {messages.map((m, index) => (
-                    <div key={index}>
-                        <strong>{m.id}: </strong>{m.message}
-                    </div>
-                ))}
-            </div>
-            <input
-                type='text'
-                placeholder='...'
+        <Container>
+            <Typography variant="h4" gutterBottom>Room name: {room}</Typography>
+            <List>
+            {messages.map((msg, index) => (
+                <ListItem key={index}>
+                <Typography variant="body1"><strong>{msg.id}:</strong> {msg.message}</Typography>
+                </ListItem>
+            ))}
+            </List>
+            <Box mt={2} display="flex" flexDirection="column" alignItems="center">
+                <TextField
+                label="Typing here"
+                variant="outlined"
                 value={newMessage}
                 onChange={(e) => setNewMessage(e.target.value)}
-            />
-            <button onClick={handleSendMessage}>Send</button>
-        </div>
+                fullWidth
+                margin="normal"
+                onKeyDown={(e) => {
+                    if (e.key === 'Enter') handleSendMessage();
+                }}
+                />
+                <Button
+                variant="contained"
+                color="primary"
+                onClick={handleSendMessage}
+                style={{ marginTop: '8px' }}
+                >
+                Send
+                </Button>
+            </Box>
+        </Container>
     );
 }
 export default ChatRoom;
