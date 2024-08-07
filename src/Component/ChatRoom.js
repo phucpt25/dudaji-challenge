@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import { useParams } from 'react-router-dom';
 import io from 'socket.io-client';
 import { Container, TextField, Button, Typography, List, ListItem, Box, IconButton } from '@mui/material';
@@ -16,9 +16,9 @@ const ChatRoom = () => {
     const [messages, setMessages] = useState([]);
     const [newMessage, setNewMessage] = useState('');
     const [showEmojiPicker, setShowEmojiPicker] = useState(false);
-
+    
     socket.emit('joinRoom', room);
-
+    
     socket.on('existingRoomMessages', (messages) => {
         setMessages(messages);
     });
@@ -26,14 +26,6 @@ const ChatRoom = () => {
     socket.on('message', (message) => {
         setMessages((prevMessages) => [...prevMessages, message]);
     })
-    
-    useEffect(() => {
-        return () => {
-            socket.off('existingRoomMessages');
-            socket.off('message');
-            socket.disconnect();
-          };
-    }, [room]);
 
     const handleSendMessage = () => {
         socket.emit('message', {room, message: newMessage});
